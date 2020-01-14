@@ -29,15 +29,13 @@
  * @brief Initializes VL53L1 device.
  *
  * @param p_device        Pointer to the device handle.
- * @param device_info     Device informations.
  * @param p_calibration   Pointer to the device calibration data.
  *
  * @return Error code.
  * @retval VL53L1_ERROR_NONE   Success.
  * @retval "Other error code"   More details in @ref VL53L1_Error.
  */
-VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_DeviceInfo_t device_info,
-                         VL53L1_CalibrationData_t* p_calibration);
+VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_calibration);
 
 /**
  * @brief Turns off device with the XSHUT pin.

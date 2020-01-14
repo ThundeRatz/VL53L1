@@ -29,16 +29,14 @@ Para utilizar a biblioteca, é necessário que, para cada sensor utlizado, sejam
 
 ```C
 VL53L1_Dev_t device;
-VL53L1_DeviceInfo_t device_info;
 VL53L1_RangingMeasurementData_t ranging_data;
-vl53l1_calibration_data_t calibration;
+VL53L1_CalibrationData_t calibration;
 ```
 
 Cada sensor deve ser inciializado separadamente com a função:
 
 ```C
-VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_DeviceInfo_t device_info,
-                            VL53L1_CalibrationData_t* calibration);
+VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* calibration);
 ```
 
 Quando utilizar mais de um sensor na mesma aplicação, é necessário desligar todos incialmente, e, individualmente, ligar, trocar o endereço de I2C e reiniciar cada um. Esse processo é feito com as funções abaixo, seguidas pela função de init.
