@@ -52,6 +52,13 @@ void vl53l1_turn_off(VL53L1_Dev_t* p_device);
 void vl53l1_turn_on(VL53L1_Dev_t* p_device);
 
 /**
+ * @brief Inicializes device handle with default values.
+ *
+ * @param p_device      Pointer to the device handle.
+ */
+void vl53l1_set_default_config(VL53L1_Dev_t* p_device);
+
+/**
  * @brief Updates device reading.
  *
  * @param p_device          Pointer to the device handle.

@@ -87,6 +87,9 @@ typedef struct {
     GPIO_TypeDef* xshut_port;
     uint16_t xshut_pin;
 
+    VL53L1_DistanceModes distance_mode;
+    uint32_t timing_budget_us;
+
 } VL53L1_Dev_t;
 
 typedef VL53L1_Dev_t *VL53L1_DEV;

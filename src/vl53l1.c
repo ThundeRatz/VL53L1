@@ -28,8 +28,8 @@
 #define DISTANCEMODE VL53L1_DISTANCEMODE_MEDIUM
 #define SIGMA_LIMIT_VALUE_MM 18
 #define SIGNAL_RATE_LIMIT_VALUE_MCPS 0.25
-#define MEASUREMENT_TIME_BUDGET_US 50000
-#define INTERMEASUREMENT_PERIOD_MS MEASUREMENT_TIME_BUDGET_US / 1000 + 5 // Needs to be longer than time budget + 4 ms
+#define MEASUREMENT_TIMING_BUDGET_US 50000
+#define INTERMEASUREMENT_PERIOD_MS MEASUREMENT_TIMING_BUDGET_US / 1000 + 5 // Needs to be longer than time budget + 4 ms
 
 /**
  * @brief Filter values, depending on range status
@@ -77,7 +77,7 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
 
     if (Status == VL53L1_ERROR_NONE) {
         // Set Distance Mode as Medium
-        Status = VL53L1_SetDistanceMode(p_device, DISTANCEMODE);
+        Status = VL53L1_SetDistanceMode(p_device, p_device->distance_mode);
     }
 
     // Enable Sigma Signal and Threshold check
@@ -109,12 +109,12 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
     if (Status == VL53L1_ERROR_NONE) {
         // Set Timing Budget - Time to perform one measurement
         // Higher Timing Budget means more accuracy and higher maximum range
-        Status = VL53L1_SetMeasurementTimingBudgetMicroSeconds(p_device, MEASUREMENT_TIME_BUDGET_US);
+        Status = VL53L1_SetMeasurementTimingBudgetMicroSeconds(p_device, p_device->timing_budget_us);
     }
 
     if (Status == VL53L1_ERROR_NONE) {
         // Set Inter-Measurement Period - Delay between two operations
-        Status = VL53L1_SetInterMeasurementPeriodMilliSeconds(p_device, INTERMEASUREMENT_PERIOD_MS);
+        Status = VL53L1_SetInterMeasurementPeriodMilliSeconds(p_device, p_device->timing_budget_us/1000 + 5);
     }
 
     // Start reading
@@ -133,6 +133,15 @@ void vl53l1_turn_on(VL53L1_Dev_t* p_device) {
     uint16_t wordData;
     HAL_GPIO_WritePin(p_device->xshut_port, p_device->xshut_pin, GPIO_PIN_SET);
     VL53L1_RdWord(p_device, VL53L1_IDENTIFICATION__MODEL_ID, &wordData);
+}
+
+void vl53l1_set_default_config(VL53L1_Dev_t* p_device) {
+    p_device->I2cDevAddr = VL53L1_DEFAULT_ADDRESS;
+    p_device->comms_type = 1;  // I2C
+    p_device->present = 0;
+    p_device->calibrated = 0;
+    p_device->distance_mode = VL53L1_DISTANCEMODE_MEDIUM;
+    p_device->timing_budget_us = MEASUREMENT_TIMING_BUDGET_US;
 }
 
 uint8_t vl53l1_update_reading(VL53L1_Dev_t* p_device, VL53L1_RangingMeasurementData_t* p_ranging_data,
