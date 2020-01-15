@@ -1,5 +1,5 @@
 /**
- * @file vl53l1x.h
+ * @file vl53l1.h
  *
  * @brief User functions to deal with ST's VL53L1 API
  *
@@ -9,8 +9,8 @@
  * @date 01/2020
  */
 
-#ifndef __VL53L1X_H__
-#define __VL53L1X_H__
+#ifndef __VL53L1_H__
+#define __VL53L1_H__
 
 #include "vl53l1_api.h"
 #include "vl53l1_platform.h"
@@ -71,4 +71,4 @@ uint8_t check_API_status(); // NOT IMPLEMENTED YET
 
 uint8_t vl53l1_reinit(); // NOT IMPLEMENTED YET
 
-#endif // __VL53L1X_H__
+#endif // __VL53L1_H__
