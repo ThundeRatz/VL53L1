@@ -29,6 +29,7 @@
 #define SIGMA_LIMIT_VALUE_MM 18
 #define SIGNAL_RATE_LIMIT_VALUE_MCPS 0.25
 #define MEASUREMENT_TIME_BUDGET_US 50000
+#define INTERMEASUREMENT_PERIOD_MS MEASUREMENT_TIME_BUDGET_US / 1000 + 5 // Needs to be longer than time budget + 4 ms
 
 /**
  * @brief Filter values, depending on range status
@@ -106,12 +107,14 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
     }
 
     if (Status == VL53L1_ERROR_NONE) {
-        // Setting Timing Budget
+        // Set Timing Budget - Time to perform one measurement
+        // Higher Timing Budget means more accuracy and higher maximum range
         Status = VL53L1_SetMeasurementTimingBudgetMicroSeconds(p_device, MEASUREMENT_TIME_BUDGET_US);
     }
 
     if (Status == VL53L1_ERROR_NONE) {
-        Status = VL53L1_SetInterMeasurementPeriodMilliSeconds(p_device, MEASUREMENT_TIME_BUDGET_US / 1000 + 5);
+        // Set Inter-Measurement Period - Delay between two operations
+        Status = VL53L1_SetInterMeasurementPeriodMilliSeconds(p_device, INTERMEASUREMENT_PERIOD_MS);
     }
 
     // Start reading
