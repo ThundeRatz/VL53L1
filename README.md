@@ -60,7 +60,10 @@ uint8_t vl53l1_update_reading(VL53L1_Dev_t* p_device, VL53L1_RangingMeasurementD
 
 Onde ```uint16_t* p_reading``` armazena o valor da leitura.
 
-### [Exemplo de adaptação da biblioteca para 3 sensores VL53L1.](https://github.com/Berbardo/VL53L1_Example/blob/master/src/adapter_example.c)
+### Exemplo de adaptação da biblioteca para 3 sensores VL53L1.
+
+Um projeto exemplo pode ser encontrado em [Berbardo/VL53L1_Example](https://github.com/Berbardo/VL53L1_Example), feito com base no [STM32ProjectTemplate](https://github.com/ThundeRatz/STM32ProjectTemplate).
+
 
 ---------------------
 
