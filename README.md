@@ -2,9 +2,21 @@
 
 Esse repositório contém uma biblioteca para lidar com o sensor de distância [VL53L1](https://www.st.com/en/imaging-and-photonics-solutions/vl53l1x.html) da ST.
 
-Essa biblioteca foi feita para ser utilizadas como submódulo no [STM32ProjectTemplate](https://github.com/ThundeRatz/STM32ProjectTemplate).
+Essa biblioteca foi feita para ser utilizada como submódulo no [STM32ProjectTemplate](https://github.com/ThundeRatz/STM32ProjectTemplate).
 
-## Adicionando o submódulo ao projeto
+# Índice
+
+- [Índice](#índice)
+- [Utilizando a Biblioteca](#utilizando-a-biblioteca)
+  - [Adicionando o Submódulo ao Projeto](#adicionando-o-submódulo-ao-projeto)
+  - [Guia de Utilização](#guia-de-utilização)
+    - [Exemplo de Adaptação da Biblioteca](#exemplo-de-adaptação-da-biblioteca-para-3-sensores-vl53l1)
+- [Guia de Funcionamento da API](#guia-de-funcionamento-da-api)
+  - [Sequências de Utilização](#sequências-de-utilização)
+
+# Utilizando a Biblioteca
+
+## Adicionando o Submódulo ao Projeto
 
 Crie um diretório chamado `lib`, caso não exista:
 
@@ -23,7 +35,7 @@ git submodule add --name VL53L1 https://github.com/ThundeRatz/VL53L1.git lib/VL5
 git submodule add --name VL53L1 git@github.com:ThundeRatz/VL53L1.git lib/VL53L1
 ```
 
-## Utilizando a biblioteca
+## Guia de Utilização
 
 Para utilizar a biblioteca, é necessário que, para cada sensor utlizado, sejam criadas as seguintes variáveis.
 
@@ -64,6 +76,21 @@ Onde ```uint16_t* p_reading``` armazena o valor da leitura.
 
 Um projeto exemplo pode ser encontrado em [Berbardo/VL53L1_Example](https://github.com/Berbardo/VL53L1_Example), feito com base no [STM32ProjectTemplate](https://github.com/ThundeRatz/STM32ProjectTemplate).
 
+# Guia de Funcionamento da API
+
+Esta biblioteca utiliza a [API completa do VL53L1](https://www.st.com/en/embedded-software/stsw-img007.html) para adaptá-lo, que possui uma série de funções úteis para a utilização e modificação do sensor. A função dessa seção é familiarizar o usuário a essas funções para aproveitar o máximo dos sensores.
+
+## Sequências de Utilização
+
+O [Guia da API](docs/VL53L1X_API_User_Manual.pdf) nos fornece orientações quanto à sequência de utilização dos sensores, indicando a ordem que devemos chamar cada função de inicialização, calibração e mensuração dos sensores. Essas sequências estão presentes a seguir, e serão explicadas em detalhes na próxima seção.
+
+### Sequência de Calibração
+
+![Calibration Flow](docs/Calibration_Flow.png)
+
+### Sequência de Mensuração
+
+![Ranging Flow](docs/Ranging_Flow.png)
 
 ---------------------
 
