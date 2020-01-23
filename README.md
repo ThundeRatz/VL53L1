@@ -49,6 +49,8 @@ VL53L1_RangingMeasurementData_t ranging_data;
 VL53L1_CalibrationData_t calibration;
 ```
 
+Algumas configurações podem ser atribuídas automaticamente à variável ```VL53L1_Dev_t device``` pela função ```vl53l1_set_default_config(VL53L1_Dev_t* p_device)```. Outras, como informações específicas do I2C e do pino XSHUT, devem ser atribuídas manualmente pelo usuário antes da inicialização.
+
 Cada sensor deve ser inicializado separadamente com a função:
 
 ```C
