@@ -10,6 +10,8 @@ Essa biblioteca foi feita para ser utilizada como submódulo no [STM32ProjectTem
 - [Utilizando a Biblioteca](#utilizando-a-biblioteca)
   - [Adicionando o Submódulo ao Projeto](#adicionando-o-submódulo-ao-projeto)
   - [Guia de Utilização](#guia-de-utilização)
+    - [Instruções Básicas](#instruções-básicas)
+    - [Configurações Adicionais](#configurações-adicionais)
     - [Exemplo de Adaptação da Biblioteca](#exemplo-de-adaptação-da-biblioteca-para-3-sensores-vl53l1)
 - [Guia de Funcionamento da API](#guia-de-funcionamento-da-api)
   - [Sequências de Utilização](#sequências-de-utilização)
@@ -37,6 +39,8 @@ git submodule add --name VL53L1 git@github.com:ThundeRatz/VL53L1.git lib/VL53L1
 
 ## Guia de Utilização
 
+### Instruções Básicas
+
 Para utilizar a biblioteca, é necessário que, para cada sensor utlizado, sejam criadas as seguintes variáveis.
 
 ```C
@@ -45,7 +49,7 @@ VL53L1_RangingMeasurementData_t ranging_data;
 VL53L1_CalibrationData_t calibration;
 ```
 
-Cada sensor deve ser inciializado separadamente com a função:
+Cada sensor deve ser inicializado separadamente com a função:
 
 ```C
 VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* calibration);
@@ -71,6 +75,34 @@ uint8_t vl53l1_update_reading(VL53L1_Dev_t* p_device, VL53L1_RangingMeasurementD
 ```
 
 Onde ```uint16_t* p_reading``` armazena o valor da leitura.
+
+### Configurações Adicionais
+
+Caso conveniente, o usuário pode configurar algumas propriedades opcionais dos sensores, como o Modo de Distância e a Expensa de Tempo. Essas configurações podem ser configuradas automaticamente pela função ```vl53l1_set_default_config(VL53L1_Dev_t* p_device)```, ou manualmente pelo usuário como uma atribuição à estrutura ```VL53L1_Dev_t device```. Explicações mais detalhadas desses atributos estão presentes a seguir:
+
+#### Modo de Distância
+
+O Modo de Distância configura propriedades internas do dispositivo dependendo do alcance desejado pelo usuário. Ele pode ser atribuído os seguintes valores:
+
+* VL53L1_DISTANCEMODE_SHORT   (Até 1.3 m)
+* VL53L1_DISTANCEMODE_MEDIUM  (Até 3 m)
+* VL53L1_DISTANCEMODE_LONG    (Até 4 m)
+
+Por exemplo, caso o uso idealizado do sensor demande um alcance de 2 m, a atribuição do Modo de Distância poderia ser feita da seguinte forma:
+
+```C
+device.distance_mode = VL53L1_DISTANCEMODE_MEDIUM;
+```
+
+#### Expensa de Tempo
+
+A Expensa de Tempo é o tempo que o sensor gastará para realizar uma medida de distância. Quanto maior a Expensa de Tempo, maior o alcance e a precisão da medida, às custas de um atraso maior na taxa de atualização. O usuário pode configurar o valor desse intervalo de tempo de 20 ms a 1000 ms.
+
+Caso seja desejada uma Expensa de Tempo de 66 ms, a configuração seria a seguinte:
+
+```C
+device.timing_budget_us = 66000; // Medida em microssegundos
+```
 
 ### Exemplo de adaptação da biblioteca para 3 sensores VL53L1.
 
