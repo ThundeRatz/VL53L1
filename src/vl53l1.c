@@ -26,16 +26,16 @@
  *****************************************/
 
 #define DISTANCEMODE VL53L1_DISTANCEMODE_MEDIUM
-#define SIGMA_LIMIT_VALUE_MM 18
+#define SIGMA_LIMIT_VALUE_MM 15
 #define SIGNAL_RATE_LIMIT_VALUE_MCPS 0.25
 #define MEASUREMENT_TIMING_BUDGET_US 50000
-#define INTERMEASUREMENT_PERIOD_MS MEASUREMENT_TIMING_BUDGET_US / 1000 + 5 // Needs to be longer than time budget + 4 ms
 
 /**
  * @brief Filter values, depending on range status
  */
 #define VALID_RANGE_FILTER 0.8
 #define SIGMA_FAIL_FILTER 0.2
+#define OUT_OF_BOUNDS_FILTER 0.3
 #define DEFAULT_FILTER 0.4
 
 /*****************************************
@@ -163,9 +163,8 @@ uint8_t vl53l1_update_reading(VL53L1_Dev_t* p_device, VL53L1_RangingMeasurementD
         // SIGMA FAIL
         aux_range = (p_ranging_data->RangeMilliMeter) * SIGMA_FAIL_FILTER + (1 - SIGMA_FAIL_FILTER) * aux_range;
     } else if (range_status == 4) {
-        // PHASE FAIL
-
-        /* In this case, aux_range will not be updated, because the reading is mostly random when this erro occurs */
+        // OUT OF BOUNDS FAIL
+        aux_range = max_range_mm * OUT_OF_BOUNDS_FILTER + (1 - OUT_OF_BOUNDS_FILTER) * aux_range;
     } else if (range_status == 5) {
         // HARDWARE FAIL
         aux_range = max_range_mm;
