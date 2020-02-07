@@ -7,16 +7,20 @@ Essa biblioteca foi feita para ser utilizada como submódulo no [STM32ProjectTem
 # Índice
 
 - [Índice](#índice)
-- [Utilizando a Biblioteca](#utilizando-a-biblioteca)
+- [Quick Start](#quick-start)
   - [Adicionando o Submódulo ao Projeto](#adicionando-o-submódulo-ao-projeto)
   - [Guia de Utilização](#guia-de-utilização)
     - [Instruções Básicas](#instruções-básicas)
     - [Configurações Adicionais](#configurações-adicionais)
     - [Exemplo de Adaptação da Biblioteca](#exemplo-de-adaptação-da-biblioteca-para-3-sensores-vl53l1)
-- [Guia de Funcionamento da API](#guia-de-funcionamento-da-api)
-  - [Sequências de Utilização](#sequências-de-utilização)
+- [Guia de Funcionamento](#guia-de-funcionamento)
+  - [Estruturas](#estruturas)
+  - [Inicialização](#inicialização)
+- [To Do](#to-do)
 
-# Utilizando a Biblioteca
+# Quick Start
+
+O objetivo desta seção é proporcionar todas as informações essenciais para utilizar o VL53L1x de maneira rápida. Um guia mais completo das fucionalidades da biblioteca pode ser encontrado em [Guia de Funcionamento](#guia-de-funcionamento).
 
 ## Adicionando o Submódulo ao Projeto
 
@@ -86,9 +90,9 @@ Caso conveniente, o usuário pode configurar algumas propriedades opcionais dos 
 
 O Modo de Distância configura propriedades internas do dispositivo dependendo do alcance desejado pelo usuário. Ele pode ser atribuído os seguintes valores:
 
-* VL53L1_DISTANCEMODE_SHORT   (Até 1.3 m)
-* VL53L1_DISTANCEMODE_MEDIUM  (Até 3 m)
-* VL53L1_DISTANCEMODE_LONG    (Até 4 m)
+* VL53L1_DISTANCEMODE_SHORT -   Até 1.3 m
+* VL53L1_DISTANCEMODE_MEDIUM -  Até 3 m
+* VL53L1_DISTANCEMODE_LONG -    Até 4 m (Padrão)
 
 Por exemplo, caso o uso idealizado do sensor demande um alcance de 2 m, a atribuição do Modo de Distância poderia ser feita da seguinte forma:
 
@@ -98,33 +102,50 @@ device.distance_mode = VL53L1_DISTANCEMODE_MEDIUM;
 
 #### Expensa de Tempo
 
-A Expensa de Tempo é o tempo que o sensor gastará para realizar uma medida de distância. Quanto maior a Expensa de Tempo, maior o alcance e a precisão da medida, às custas de um atraso maior na taxa de atualização. O usuário pode configurar o valor desse intervalo de tempo de 20 ms a 1000 ms.
+A Expensa de Tempo é o tempo que o sensor gastará para realizar uma medida de distância. Quanto maior a Expensa de Tempo, maior o alcance e a precisão da medida, às custas de um atraso maior na taxa de atualização. O usuário pode configurar o valor desse intervalo de tempo de 20 ms a 1000 ms. Por padrão, ele é inicializado como 50 ms.
 
-Caso seja desejada uma Expensa de Tempo de 66 ms, a configuração seria a seguinte:
+Caso seja desejada uma Expensa de Tempo de 65 ms, a configuração seria a seguinte:
 
 ```C
-device.timing_budget_us = 66000; // Medida em microssegundos
+device.timing_budget_us = 65000; // Medida em microssegundos
 ```
 
 ### Exemplo de adaptação da biblioteca para 3 sensores VL53L1.
 
 Um projeto exemplo pode ser encontrado em [Berbardo/VL53L1_Example](https://github.com/Berbardo/VL53L1_Example), feito com base no [STM32ProjectTemplate](https://github.com/ThundeRatz/STM32ProjectTemplate).
 
-# Guia de Funcionamento da API
+# Guia de Funcionamento
 
-Esta biblioteca utiliza a [API completa do VL53L1](https://www.st.com/en/embedded-software/stsw-img007.html) para adaptá-lo, que possui uma série de funções úteis para a utilização e modificação do sensor. A função dessa seção é familiarizar o usuário a essas funções para aproveitar o máximo dos sensores.
+Essa biblioteca utiliza a [API completa do VL53L1](https://www.st.com/en/embedded-software/stsw-img007.html) para adaptá-lo, uma interface complexa que possibilita a personalização de diversas configurações dos sensores. Esta seção objetiva familiarizar o usuário à biblioteca para entender seus usos e possibilitar sua modificação.
 
-## Sequências de Utilização
+## Estruturas
 
-O [Guia da API](docs/VL53L1X_API_User_Manual.pdf) nos fornece orientações quanto à sequência de utilização dos sensores, indicando a ordem que devemos chamar cada função de inicialização, calibração e mensuração dos sensores. Essas sequências estão presentes a seguir, e serão explicadas em detalhes na próxima seção.
+Para a utilização do VL53L1x, é necessário instanciar variáveis de três estruturas diferentes para cada um. Como a configuração e o monitoramento dos sensores é feita majoritariamente por meio dessas variáveis, a parte a seguir explica cada uma dessas estruturas para facilitar seu controle.
 
-### Sequência de Calibração
+- **```VL53L1_Dev_t```**
 
-![Calibration Flow](docs/Calibration_Flow.png)
+- **```VL53L1_RangingMeasurementData_t```**
 
-### Sequência de Mensuração
+- **```VL53L1_CalibrationData_t```**
 
-![Ranging Flow](docs/Ranging_Flow.png)
+## Inicialização
+
+O primeiro passo para a utilização do sensor é sua inicialização, que se dá por meio da função ```vl53l1_init```. Essa função inicializa, calibra, configura e começa a medir as leituras de distância. A explicação de cada uma dessas ações será apresentada a seguir:
+
+*To Do*
+
+# To Do
+
+- Documentar:
+  - Guia de Funcionamento
+    - Estruturas 
+    - Inicialização
+      - Limit Checks
+    - Utilização de mais de um sensor
+    - Atualização da Leitura (e erros)
+- Programar:
+  - Escolha dos Limit Checks
+  - Region of Interest (RoI)
 
 ---------------------
 

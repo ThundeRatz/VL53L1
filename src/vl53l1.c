@@ -6,7 +6,7 @@
  * @author Lucas Schneider <lucas.schneider@thunderatz.org>
  * @author Bernardo Coutinho <bernardo.coutinho@thunderatz.org>
  *
- * @date 01/2020
+ * @date 02/2020
  */
 
 #include "vl53l1.h"
@@ -25,7 +25,7 @@
  * Private Constants
  *****************************************/
 
-#define DISTANCEMODE VL53L1_DISTANCEMODE_LONG
+#define DEFAULT_DISTANCEMODE VL53L1_DISTANCEMODE_LONG
 #define SIGMA_LIMIT_VALUE_MM 50
 #define SIGNAL_RATE_LIMIT_VALUE_MCPS 0.25
 #define MEASUREMENT_TIMING_BUDGET_US 50000
@@ -55,7 +55,7 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
     }
 
     if (Status == VL53L1_ERROR_NONE) {
-        // Device Initialization
+        // Device initialization
         Status = VL53L1_StaticInit(p_device);
     }
 
@@ -141,7 +141,7 @@ void vl53l1_set_default_config(VL53L1_Dev_t* p_device) {
     p_device->comms_type = 1;  // I2C
     p_device->present = 0;
     p_device->calibrated = 0;
-    p_device->distance_mode = VL53L1_DISTANCEMODE_MEDIUM;
+    p_device->distance_mode = DEFAULT_DISTANCEMODE;
     p_device->timing_budget_us = MEASUREMENT_TIMING_BUDGET_US;
 }
 
