@@ -120,8 +120,12 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
 
     // Start reading
     if (Status == VL53L1_ERROR_NONE) {
-        Status = VL53L1_StartMeasurement(p_device);
+        Status = VL53L1_ClearInterruptAndStartMeasurement(p_device);
     }
+
+    VL53L1_WaitMeasurementDataReady(p_device);
+
+    VL53L1_ClearInterruptAndStartMeasurement(p_device);
 
     return Status;
 }
@@ -182,6 +186,8 @@ uint8_t vl53l1_update_reading(VL53L1_Dev_t* p_device, VL53L1_RangingMeasurementD
     if (status == 0) {
         status = range_status;
     }
+
+    VL53L1_ClearInterruptAndStartMeasurement(p_device);
 
     return status;
 }
