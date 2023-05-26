@@ -25,10 +25,10 @@
  * Private Constants
  *****************************************/
 
-#define DEFAULT_DISTANCEMODE VL53L1_DISTANCEMODE_LONG
+#define DEFAULT_DISTANCEMODE VL53L1_DISTANCEMODE_SHORT
 #define SIGMA_LIMIT_VALUE_MM 50
 #define SIGNAL_RATE_LIMIT_VALUE_MCPS 0.25
-#define MEASUREMENT_TIMING_BUDGET_US 50000
+#define MEASUREMENT_TIMING_BUDGET_US 16000
 
 /**
  * @brief Filter values, depending on range status
@@ -111,6 +111,18 @@ VL53L1_Error vl53l1_init(VL53L1_Dev_t* p_device, VL53L1_CalibrationData_t* p_cal
         // Set Timing Budget - Time to perform one measurement
         // Higher Timing Budget means more accuracy and higher maximum range
         Status = VL53L1_SetMeasurementTimingBudgetMicroSeconds(p_device, p_device->timing_budget_us);
+    }
+
+    if (Status == VL53L1_ERROR_NONE) {
+        VL53L1_UserRoi_t roi_config = {
+            .TopLeftX=6,
+            .TopLeftY=9,
+            .BotRightX=9,
+            .BotRightY=6
+        };
+
+        // Set ROI
+        Status = VL53L1_SetUserROI(p_device, &roi_config);
     }
 
     if (Status == VL53L1_ERROR_NONE) {
